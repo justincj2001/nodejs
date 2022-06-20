@@ -1,4 +1,4 @@
-const http = require('http');
+const http = require('https');
 const port = process.env.PORT || 3000
 fs = require('fs');
 f= require('./put-files');
@@ -36,9 +36,9 @@ async function upload() {
   global.a="https://dweb.link/ipfs/"+cid+"/image1.jpg";
 }
 
-app.get('/profile', function (req, res) {
+app.get('/site', function (req, res) {
   const file = fs.createWriteStream("image1.jpg");
-  const str1=req.query.name;
+  const str1=req.query.url;
   console.log(str1);
   //this is link for the image
 const request = http.get(str1, function(response) {
