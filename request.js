@@ -1,5 +1,5 @@
 const http = require('http');
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 3000
 fs = require('fs');
 f= require('./put-files');
 require('process');
@@ -7,33 +7,10 @@ minimist= require('minimist');
 Web3Storage =require('web3.storage').Web3Storage;
 getFilesFromPath= require('web3.storage').getFilesFromPath;
 
-
-const server = http.createServer((req, res) => {
-  str1="req.url.substring(1);"
-  console.log(req.url.substring(1));
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
-  
-  const file = fs.createWriteStream("file1.jpg");
-const request = http.get(req.url.substring(1), function(response) {
-   response.pipe(file);
-
-   // after download completed close filestream
-   file.on("finish", () => {
-       file.close();
-       upload();
-       
-   });
-});
-
-});
-
-server.listen(port,() => {
-  console.log(`Server running at port `+port);
-});
-
-
-
+global.a="not generated";
+var express = require('express');
+var app = express(); 
+var PORT = 3000;
 
 async function upload() {
   const args = minimist(process.argv.slice(2))
@@ -49,11 +26,34 @@ async function upload() {
 
   storage = new Web3Storage({ token })
   const files = []
-  const pathFiles = await getFilesFromPath("file1.jpg")
+  const pathFiles = await getFilesFromPath("image1.jpg")
   files.push(...pathFiles)
 
   console.log(`Uploading ${files.length} files`)
   const cid = await storage.put(files)
   console.log('Content added with CID:', cid)
-  return cid
+  
+  global.a="https://dweb.link/ipfs/"+cid+"/image1.jpg";
 }
+
+app.get('/profile', function (req, res) {
+  const file = fs.createWriteStream("image1.jpg");
+  const str1=req.query.name;
+  console.log(str1);
+  //this is link for the image
+const request = http.get(str1, function(response) {
+   response.pipe(file);
+
+   // after download completed close filestream
+   file.on("finish", () => {
+       file.close();
+       upload();
+       
+   });
+});
+  
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.write(global.a);
+  res.end();
+  
+}).listen(8080);
