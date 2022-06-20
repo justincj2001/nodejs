@@ -6,8 +6,8 @@ require('process');
 minimist= require('minimist');
 Web3Storage =require('web3.storage').Web3Storage;
 getFilesFromPath= require('web3.storage').getFilesFromPath;
-
-global.a="not generated";
+global.b=false;
+global.a="10";
 var cors = require('cors')
 var express = require('express');
 var app = express();
@@ -33,7 +33,7 @@ async function upload() {
   console.log(`Uploading ${files.length} files`)
   const cid = await storage.put(files)
   console.log('Content added with CID:', cid)
-  
+  global.b=true;
   global.a="https://dweb.link/ipfs/"+cid+"/image1.jpg";
 }
 
@@ -52,9 +52,13 @@ const request = http.get(str1, function(response) {
        
    });
 });
+if(!global.b){
+  res.status(404).send("Oh uh, wait for file to upload  status code: "+res.statusCode);
+}
   res.header("Access-Control-Allow-Headers: Access-Control-Allow-Origin, Accept");
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write(global.a);
   res.end();
   
+
 }).listen(port);
