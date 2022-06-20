@@ -9,8 +9,7 @@ getFilesFromPath= require('web3.storage').getFilesFromPath;
 
 global.a="not generated";
 var express = require('express');
-var app = express(); 
-var PORT = 3000;
+var app = express();
 
 async function upload() {
   const args = minimist(process.argv.slice(2))
@@ -56,4 +55,4 @@ const request = http.get(str1, function(response) {
   res.write(global.a);
   res.end();
   
-}).listen(8080);
+}).listen(port);
