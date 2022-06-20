@@ -1,4 +1,4 @@
-const http = require('https');
+const http = require('http');
 const port = process.env.PORT || 3000
 fs = require('fs');
 f= require('./put-files');
@@ -8,8 +8,10 @@ Web3Storage =require('web3.storage').Web3Storage;
 getFilesFromPath= require('web3.storage').getFilesFromPath;
 
 global.a="not generated";
+var cors = require('cors')
 var express = require('express');
 var app = express();
+app.use(cors())
 
 async function upload() {
   const args = minimist(process.argv.slice(2))
@@ -50,7 +52,7 @@ const request = http.get(str1, function(response) {
        
    });
 });
-  
+  res.header("Access-Control-Allow-Headers: Access-Control-Allow-Origin, Accept");
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write(global.a);
   res.end();
