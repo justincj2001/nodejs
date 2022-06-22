@@ -1,4 +1,4 @@
-const http = require('https');
+const http = require('http');
 const port = process.env.PORT || 3000
 fs = require('fs');
 f= require('./put-files');
@@ -12,6 +12,8 @@ var cors = require('cors')
 var express = require('express');
 var app = express();
 app.use(cors())
+
+
 
 async function upload() {
   const args = minimist(process.argv.slice(2))
@@ -35,9 +37,10 @@ async function upload() {
   console.log('Content added with CID:', cid)
   global.b=true;
   global.a="https://dweb.link/ipfs/"+cid+"/image1.jpg";
+  return;
 }
 
-app.get('/site', function (req, res) {
+let server=app.get('/site', function (req, res) {
   const file = fs.createWriteStream("image1.jpg");
   const str1=req.query.url;
   console.log(str1);
@@ -53,13 +56,17 @@ const request = http.get(str1, function(response) {
    });
 });
 if(!global.b){
-  res.status(500).send("Oh uh, wait for file to upload  status code: "+res.statusCode);
-      return;
+  res.status(404).send("Oh uh, wait for file to upload  status code: "+res.statusCode);
+    return;
+
 }
   res.header("Access-Control-Allow-Headers: Access-Control-Allow-Origin, Accept");
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write(global.a);
   res.end();
-  
+  if(res.status(404)){
+    process.exit();
+  }
 
 }).listen(port);
+
