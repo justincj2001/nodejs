@@ -29,19 +29,22 @@ async function upload() {
 
   storage = new Web3Storage({ token })
   const files = []
-  const pathFiles = await getFilesFromPath("image1.jpg")
+  const pathFiles = await getFilesFromPath(global.ran+".jpg")
   files.push(...pathFiles)
 
   console.log(`Uploading ${files.length} files`)
   const cid = await storage.put(files)
   console.log('Content added with CID:', cid)
   global.b=true;
-  global.a="https://dweb.link/ipfs/"+cid+"/image1.jpg";
+  global.a="https://dweb.link/ipfs/"+cid+"/"+global.ran+".jpg";
   return;
 }
 
-let server=app.get('/site', function (req, res) {
-  const file = fs.createWriteStream("image1.jpg");
+setTimeout(()=>{let server=app.get('/site', function (req, res) {
+  var randomstring = Math.random().toString(36).slice(-8);
+  global.ran=randomstring;
+
+  const file = fs.createWriteStream(randomstring+".jpg");
   const str1=req.query.url;
   console.log(str1);
   //this is link for the image
@@ -68,5 +71,5 @@ if(!global.b){
     process.exit();
   }
 
-}).listen(port);
+}).listen(port);},1000);
 
