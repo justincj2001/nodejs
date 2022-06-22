@@ -67,9 +67,6 @@ if(!global.b){
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write(global.a);
   res.end();
-  if(res.status(404)){
-    process.exit();
-  }
 
 }).listen(port);},1000);
 
