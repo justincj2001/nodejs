@@ -53,7 +53,7 @@ const request = http.get(str1, function(response) {
    });
 });
 if(!global.b){
-  res.status(404).send("Oh uh, wait for file to upload  status code: "+res.statusCode);
+  res.status(500).send("Oh uh, wait for file to upload  status code: "+res.statusCode);
 }
   res.header("Access-Control-Allow-Headers: Access-Control-Allow-Origin, Accept");
   res.writeHead(200, {'Content-Type': 'text/plain'});
